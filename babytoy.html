@@ -1,0 +1,16 @@
+<html>
+<script src="angular.js"></script>
+<script src="babytoy.js"></script>
+<link rel="stylesheet" href="toy.css">
+<body ng-app="babyToyApp"
+	ng-controller="BabyToyController as toy"
+	style="background-color: {{toy.background}};">
+		<div
+			style="{{toy.boldTitle|BinaryBold}};">
+			<center>
+				Baby {{toy.name}}'s Toy!
+			</center>
+		</div>
+</body>
+
+</html>
