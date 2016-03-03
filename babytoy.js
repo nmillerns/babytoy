@@ -6,34 +6,53 @@ app.controller('BabyToyController', function($scope, $location)
 	viewmodel.name = $location.search().name;
 	viewmodel.backgroundIndex = 0;
 	viewmodel.boldTitle = false;
-	viewmodel.letter = 'A';
+	viewmodel.letter = '';
+	viewmodel.number = null;
 
 	viewmodel.key_handler = function(event) {
 		var name = event.code;
 		console.log(name);
 		if (name == 'Space') {
 			viewmodel.boldTitle = !viewmodel.boldTitle;
-			$scope.$apply();
 		}
-		console.log(name.slice(0, 3));
 		if (name.length == 4
 			&& name.slice(0, 3) == 'Key'
 			&& 'A' <= name[3] && name[3] <= 'Z') {
-			viewmodel.letter = name[3]
-			$scope.$apply();
+			viewmodel.letter = name[3];
+			viewmodel.number = null;
+		}
+		if (name.length == 6
+			&& name.slice(0, 5) == 'Digit'
+			&& '0' <= name[5] && name[5] <= '9') {
+			viewmodel.number = name[5];
+			viewmodel.letter = '';
 		}
 		if (name in MIDDLE_ROW_LOOKUP) {
 			viewmodel.backgroundIndex = MIDDLE_ROW_LOOKUP[name];
-			$scope.$apply();
 		}
 		if (name == 'Comma') {
 			viewmodel.backgroundIndex--;
-			$scope.$apply();
 		}
 		if (name == 'Period') {
 			viewmodel.backgroundIndex++;
-			$scope.$apply();
 		}
+		if (name == 'Minus') {
+			if (viewmodel.number == null || viewmodel.number == 0) {
+				viewmodel.number = 0;
+			} else {
+				viewmodel.number--;
+			}
+			viewmodel.letter = '';
+		}
+		if (name == 'Equal') {
+			if (viewmodel.number == null) {
+				viewmodel.number = 0;
+			} else {
+				viewmodel.number++;
+			}
+			viewmodel.letter = '';
+		}
+		$scope.$apply();
 		event.stopPropagation();
 	};
 
@@ -67,4 +86,26 @@ app.filter('IndexedColor', function()
 	};
 });
 
+
+app.filter('DotsNumber', function()
+{
+	return function (input) {
+		dots = '';
+		for (i = 0; i < input; ++i) {
+			dots += '.'
+		}
+		return dots;
+	};
+});
+
+app.filter('WholeNumber', function()
+{
+	return function (input) {
+		if (input != null) {
+			return input;
+		} else {
+			return '';
+		}
+	};
+});
 
