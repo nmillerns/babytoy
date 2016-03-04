@@ -12,6 +12,9 @@ app.controller('BabyToyController', function($scope, $location)
 	viewmodel.key_handler = function(event) {
 		var name = event.code;
 		console.log(name);
+		if (name != 'F11') {
+			event.preventDefault();
+		}
 		if (name == 'Space') {
 			viewmodel.boldTitle = !viewmodel.boldTitle;
 		}
@@ -53,6 +56,7 @@ app.controller('BabyToyController', function($scope, $location)
 			viewmodel.letter = '';
 		}
 		$scope.$apply();
+		document.getElementById("body").focus();
 		event.stopPropagation();
 	};
 
